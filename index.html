@@ -1,463 +1,1117 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="tr">
 <head>
-    <meta charset="utf-8">
-    <title>Ahmet Buğra Balkaya</title>
-    
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <!-- Favicon -->
-    <link href="img/code.ico" rel="icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahmet Buğra Balkaya - Android Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #1a1f2e;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-cyan: #06b6d4;
+            --accent-orange: #f97316;
+            --accent-purple: #a855f7;
+            --gradient-1: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #a855f7 100%);
+            --gradient-2: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+        }
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet"> 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(249, 115, 22, 0.08) 0%, transparent 50%);
+            animation: drift 20s ease-in-out infinite;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-5%, 5%) rotate(2deg); }
+            66% { transform: translate(5%, -5%) rotate(-2deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 23, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subtitle {
+            font-family: 'Space Mono', monospace;
+            color: var(--accent-cyan);
+            font-size: 1rem;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .hero-title .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--accent-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(6, 182, 212, 0.1);
+            transform: translateY(-3px);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-1);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-info {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-1);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-width: 150px;
+            font-size: 1.05rem;
+        }
+
+        .info-value {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .skill-card:hover::before {
+            left: 100%;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.2);
+        }
+
+        .skill-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .skill-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Experience Section */
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .experience-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .experience-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 20px 60px rgba(6, 182, 212, 0.3);
+        }
+
+        .experience-header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .experience-type {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 50px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .experience-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .experience-company {
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .experience-date {
+            font-family: 'Space Mono', monospace;
+            color: var(--accent-orange);
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .experience-date::before {
+            content: '📅';
+            font-size: 1rem;
+        }
+
+        .experience-body {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .experience-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .experience-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .experience-tag {
+            padding: 0.4rem 1rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .experience-icon {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 3rem;
+            opacity: 0.15;
+            transition: all 0.4s ease;
+        }
+
+        .experience-card:hover .experience-icon {
+            opacity: 0.3;
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-color: var(--accent-cyan);
+        }
+
+        .project-header {
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .project-tech {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        .project-body {
+            padding: 2rem;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-label {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-value {
+            color: var(--text-secondary);
+            word-break: break-word;
+        }
+
+        .contact-value a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-value a:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: var(--accent-cyan);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .experience-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+        }
+
+        /* Scroll Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
+<body>
+    <div class="bg-animation"></div>
 
-<body data-spy="scroll" data-target=".navbar" data-offset="51">
-    <!-- Navbar Start -->
-    <nav class="navbar fixed-top shadow-sm navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-lg-5">
-        <a href="index.html" class="navbar-brand ml-lg-3">
-            <h1 class="m-0 display-5"><span class="text-primary">AB</span>BALKAYA</h1>
-        </a>
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse px-lg-3" id="navbarCollapse">
-            <div class="navbar-nav m-auto py-0">
-                <a href="#home" class="nav-item nav-link active">Ana Sayfa</a>
-                <a href="#about" class="nav-item nav-link">Hakkımda</a>
-                <a href="#qualification" class="nav-item nav-link">Vasıflarım</a>
-                <a href="#myproject" class="nav-item nav-link">Projelerim</a>
-                <a href="#portfolio" class="nav-item nav-link">Galerim</a>
-            </div>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">ABB</div>
+            <ul class="nav-links">
+                <li><a href="#home">Ana Sayfa</a></li>
+                <li><a href="#about">Hakkımda</a></li>
+                <li><a href="#experience">Deneyim</a></li>
+                <li><a href="#projects">Projeler</a></li>
+                <li><a href="#contact">İletişim</a></li>
+            </ul>
         </div>
     </nav>
-    <!-- Navbar End -->
 
-    <!-- Header Start -->
-    <div class="container-fluid bg-primary d-flex align-items-center mb-5 py-5" id="home" style="min-height: 100vh;">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-5 px-5 pl-lg-0 pb-5 pb-lg-0">
-                    <img class="img-fluid w-100 rounded-circle shadow-sm" src="img/WhatsApp Image 2022-07-11 at 11.24.39 (2).jpeg" alt="">
-                </div>
-                <div class="col-lg-7 text-center text-lg-left">
-                    <h3 class="text-white font-weight-normal mb-3">Ben</h3>
-                    <h1 class="display-3 text-uppercase text-primary mb-2" style="-webkit-text-stroke: 2px #ffffff;">Ahmet Buğra Balkaya</h1>
-                    <h1 class="typed-text-output d-inline font-weight-lighter text-white"></h1>
-                    <div class="typed-text d-none">Android App Developer</div>
-                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start pt-5">
-                    </div>
-                </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-subtitle">ANDROID DEVELOPER</div>
+            <h1 class="hero-title">
+                Merhaba, Ben<br>
+                <span class="gradient-text">Ahmet Buğra Balkaya</span>
+            </h1>
+            <p class="hero-description">
+                Kotlin ile modern Android uygulamaları geliştiriyorum. Temiz kod, kullanıcı deneyimi ve 
+                yenilikçi çözümler odaklı çalışıyorum.
+            </p>
+            <div class="hero-cta">
+                <a href="#projects" class="btn btn-primary">Projelerimi İncele</a>
+                <a href="#contact" class="btn btn-secondary">İletişime Geç</a>
             </div>
         </div>
-    </div>
-    <!-- Header End -->
+    </section>
 
-
-    <!-- About Start -->
-    <div class="container-fluid py-5" id="about">
-        <div class="container">
-            <div class="position-relative d-flex align-items-center justify-content-center">
-                <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Benim</h1>
-                <h1 class="position-absolute text-uppercase text-primary">Hakkımda</h1>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-lg-5 pb-4 pb-lg-0">
-                    <img class="img-fluid rounded w-100" src="img/WhatsApp Image 2022-07-11 at 11.24.39 (1).jpeg" alt="">
-                </div>
-                <div class="col-lg-7">
-                    <h3 class="mb-4">AHMET BUĞRA BALKAYA</h3>
-                    <p>Atatürk Üniversitesi Bilgisayar Mühendisliği mezunuyum. Öğrencilik yıllarımda masaüstü,web, oyun geliştirme ve mobil uygulamalar üzerine çalışmalar yaptım. Son 2 yıldır Kotlin ile
-                        Android mobil uygulamalar geliştiriyorum. Temiz kod, modern mimari prensipleri ve yeni teknolojilere uygun çözümler üretmeye odaklandım. Farklı
-                        yazılım alanlarını keşfetmem,bugün mobil projelerde daha yaratıcı, analitik ve kullanıcı odaklı bir yaklaşım geliştirmeme yardımcı
-                        oldu. Mobil dünyada değer üreten uygulamalar geliştirmeyi hedefliyorum.</p>
-                    <div class="row mb-3">
-                        <div class="col-sm-6 py-2"><h6>İsmim: <span class="text-secondary">Ahmet Buğra Balkaya</span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Doğum Tarihim: <span class="text-secondary">23 Ekim 2001</span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Eğtim Durumum: <span class="text-secondary">Bilgisayar Mühendisliği Lisans Mezunu</span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Email: <span class="text-secondary">ahmetbugrabalkaya@gmail.com</span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Adresim: <span class="text-secondary">Saltuklu Mah. AZİZİYE/ERZURUM</span></h6></div>
-                        <div class="col-sm-6 py-2"><h6>Askerlik Durumum: <span class="text-secondary">Askerlik Görevimi tamamladım.</span></h6></div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- About End -->
-
-    <!-- Qualification Start -->
-    <div class="container-fluid py-5" id="qualification">
-        <div class="container">
-            <div class="position-relative d-flex align-items-center justify-content-center">
-                <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">NİTELİK</h1>
-                <h1 class="position-absolute text-uppercase text-primary">Eğitim ve Deneyim</h1>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h3 class="mb-4">Eğitimim</h3>
-                    <div class="border-left border-primary pt-2 pl-4 ml-2">
-                        <div class="position-relative mb-4">
-                            <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                            <h5 class="font-weight-bold mb-1">Üniversite</h5>
-                            <p class="mb-2"><strong>Atatürk Üniversitesi</strong> | <small>2020-2024</small></p>
-                            <p>Belirtilen tarihlerde  Bilgisayar Mühendisliği Bölümünü başarılı bir şekilde tamamladım.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <h3 class="mb-4">Deneyimlerim</h3>
-                    <div class="border-left border-primary pt-2 pl-4 ml-2">
-                        <div class="position-relative mb-4">
-                            <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                            <h5 class="font-weight-bold mb-1">Yönetim Ofisi</h5>
-                            <p class="mb-2"><strong>Atatürk Üniversitesi</strong> | <small>2022-2024</small></p>
-                            <p>Fakültemizde kullanılmakta olan sunucu ve ağ alt yapısının yönetimi ve bakımında görev aldım.
-                               Fakülte genelinde kullanılan cihazların bu altyapı ile entegrasyonu, optimizasyonu ve olası sorunların çözümü konusunda teknik destek sağladım.</p>
-                        </div>
-                        <div class="position-relative mb-4">
-                            <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                            <h5 class="font-weight-bold mb-1">Staj</h5>
-                            <p class="mb-2"><strong>Valentura Teknoloji ve Yatırım A.Ş.</strong> | <small>07.2024-09.2024</small></p>
-                            <p>Staj sürecimde Mobile Game Developer olarak bir 2D oyun projesinin backend ve veritabanı altyapısının geliştirilmesinde görev aldım. Oyun
-                               içi veri yönetimi, API entegrasyonları ve temel sunucu tarafı işlemlerinde aktif rol üstlendim. </p>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Qualification End -->
-
-
-   
-<!-- Qualification Start -->
-<div class="container-fluid py-5" id="myproject">
-    <div class="container">
-        <div class="position-relative d-flex align-items-center justify-content-center">
-            <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Çalışmalar</h1>
-            <h1 class="position-absolute text-uppercase text-primary">Projelerim</h1>
-        </div>
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <div class="border-left border-primary pt-2 pl-4 ml-2">
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Eczane Otomasyonu</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>C# - MSSQL</small></p>
-                        <p>Veri Tabanı Yönetim Sistemleri dersi altında bir eczane için ilaç stok bilgilerinin kontrolü ve ön muhasebe işlemlerini yapan bir masaüstü projesi yaptım.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Dershane Otomasyonu</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>C# - MSSQL</small></p>
-                        <p>Bir dershane işletmesinin öğrenci kayıt ve ödeme işlemlerini gerçekleştiren masaüstü bir proje yaptım.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Gebze İş Güvenliği Web Site</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Wordpres - PHP - MySQL</small></p>
-                        <p>Gebze İş Güvenliği Firmasının E-Ticaret Web Sitesini yaptım. <a href="https://gebzeisguvenligi.com/">Gebze İş Güvenliği</a></p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Kendi Web Sitem</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>HTML - CSS - JavaScript - PythonDjango</small></p>
-                        <p>Kendi Portfolyo web sitemi yaptım.<a href="https://ahmetbugra25.github.io/ahmetbugrabalkaya.com/">ABBALKAYA</a></p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">BalCar BTK Akademi</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Unity - C#</small></p>
-                        <p>BTK Akademi Unity Atolyesi kursu bitirme projesi için BalCar adıyla araba yarışı mobil oyunu yaptım. </p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Paint</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Unity - C# - Firebase</small></p>
-                        <p>Çocuklar için resim çizebilecekleri bir mobil paint oyunu yaptım.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Üretken Akademi Bitirme Projesi</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Unity - C# - Firebase</small></p>
-                        <p>Üretken Akademi Unity Eğtimi için Askeri bir masaüstü oyun yaptım.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Bitirme Projesi</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Unity - C# - Firebase - ChatGPT API</small></p>
-                        <p>Lisans Programım için zorunlu tutulan bitirme projesi altında gerçekleştirdim. Çocukların bilinçsiz telefon kullanımını engellemek ve telefon kullanımlarını aile ve yapay zeka gözetiminde yaparak çocukların gelişimi için seçilmiş özel oyunları içeren mobil oyun projesi yaptım.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">To Do List App</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - Firebase - RoomDB</small></p>
-                        <p>Mobil Programlama dersi altında firebase authentication, firestore databese teknolojileri ve Kotlin Programlama dili kullanarak to do list app mobil uygulaması yaptım.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Yemek Tarifi App</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - RoomDB</small></p>
-                        <p>Kotlin üzerinde bilgi ve tecrübe edinmek adına örnek projedir. Proje içerisinde yemek tarifleri üzerinde CRUD işlemleri yapılmasını sağlamaktadır.</p>
-                    </div>
-                </div>
-                
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title fade-in">Hakkımda</h2>
+        <p class="section-subtitle fade-in">Kim olduğumu ve neler yaptığımı keşfedin</p>
+        
+        <div class="about-content fade-in">
+            <div class="about-text">
+                <p>
+                    Atatürk Üniversitesi Bilgisayar Mühendisliği mezunuyum. Öğrencilik yıllarımda masaüstü, 
+                    web, oyun geliştirme ve mobil uygulamalar üzerine çalışmalar yaptım.
+                </p>
+                <p>
+                    Son 2 yıldır Kotlin ile Android mobil uygulamalar geliştiriyorum. Temiz kod, modern mimari 
+                    prensipleri ve yeni teknolojilere uygun çözümler üretmeye odaklandım.
+                </p>
+                <p>
+                    Farklı yazılım alanlarını keşfetmem, bugün mobil projelerde daha yaratıcı, analitik ve 
+                    kullanıcı odaklı bir yaklaşım geliştirmeme yardımcı oldu. Mobil dünyada değer üreten 
+                    uygulamalar geliştirmeyi hedefliyorum.
+                </p>
             </div>
             
-            <div class="col-lg-6">
-                <div class="border-left border-primary pt-2 pl-4 ml-2">
-                    
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Mobile Otomasyon</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - RoomDB</small></p>
-                        <p>Kotlin üzerinde bilgi ve tecrübe edinmek adına örnek projedir. Projede Katagori ve onlara bağlı ürünler için CRUD işlemleri yapılabilir.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Social Media App</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - Firebase Authentication- Firebase Firestore - Firebase Storage</small></p>
-                        <p>Mobil Programlama dersi altında firebase authentication, firestore databese,firestore storage teknolojileri kullanılarak yapılmıştır. Kullanıcıların sisteme kayıt olaiblidikleri ve gönderiler oluşturabileceği bir uygulama yapılmıştır.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Besin Kitabı</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - Retrofit - MVVM - JSON - RoomDB</small></p>
-                        <p>Kotlin üzerinde bilgi ve tecrübe edinmek adına örnek projedir. Retrofit kullanımı, json formatında verilerin çekilmesi ve RoomDB üzeirne kayıt edilmesi işlemlerinin pekiştirilmesi adına yapılmış bir uygulamadır.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Sahibinden.com Mobile App</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - Firebase Authentication- Firebase Firestore - Firebase Storage</small></p>
-                        <p>Kotlin üzerinde bilgi ve tecrübe edinmek adına örnek projedir. Sahibinden.com benzeri bir 2.El alışveriş mobil uygulaması yaptım. Bilgilerimi güncel tutmak ve yeni deneiymler edinilmesi adına yapılmıştır.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">ErzTask</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - Firebase Authentication- Firebase Firestore</small></p>
-                        <p>Bir yazılım geliştirme şirketi için örnek klon projedir.Şirket içerisinde çalışanlar arasındaki iletişi kolaylaştırmak ve haberleşmelerine yardımcı olmak amacıyla gelişitirilmiştir.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">ActivityPool(BuBilet Klon)</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - Firebase Authentication - Firebase Firestore - TicketMaster API -  GoogleMaps API - Retrofit - RxJava</small></p>
-                        <p>Kullanıcıların uygulamaya kayıt olarak yaşadıkları konuma göre veya filtreledikleri katagorilerde mevcut etkinlikleri göreiblmesi, kayıt olabilmesi, favoriye alabilmesi, yorumlar yapabilmesi ve etkinlik konumuna yol tarifi alabilmesi sağlanmıştır.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Weather</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - Retrofit - RxJava - WeatherStack API - Picasso</small></p>
-                        <p>Spinner ile seçilen şehire ait anlık hava durumu bilgisini WeatherStack API ile çekilmesi ve RecylerView üzerinde gösterilmiştir. Retrofit,RxJava ve API kullanımında tecrübe kazanmaktır.</p>
-                    </div>
-                    <div class="position-relative mb-4">
-                        <i class="far fa-dot-circle text-primary position-absolute" style="top: 2px; left: -32px;"></i>
-                        <h5 class="font-weight-bold mb-1">Crypto</h5>
-                        <p class="mb-2"><strong>Kullanılan Dil ve Teknoloji</strong> : <small>Kotlin - Retrofit - RxJava - NomicsAPI - Github Json</small></p>
-                        <p>NomicsAPI ile güncel crypto değerlerinin çekilmesi, Github üzeirnde json dosyası üzerine kayıt edilmiş crypto değerlerinin çekilmesi ve listelenmesi yapılmıştır. Amaç Retrofit,RxJava,Coroutinler ve API kullanımında tecrübe kazanmaktır.</p>
-                    </div>
-
+            <div class="about-info">
+                <div class="info-item">
+                    <span class="info-label">İsim:</span>
+                    <span class="info-value">Ahmet Buğra Balkaya</span>
                 </div>
-                
+                <div class="info-item">
+                    <span class="info-label">Doğum Tarihi:</span>
+                    <span class="info-value">23 Ekim 2001</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Eğitim:</span>
+                    <span class="info-value">Bilgisayar Mühendisliği</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Konum:</span>
+                    <span class="info-value">Erzurum, Türkiye</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">ahmetbugrabalkaya@gmail.com</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Askerlik:</span>
+                    <span class="info-value">Tamamlandı</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section>
+        <h2 class="section-title fade-in">Teknik Yetenekler</h2>
+        <p class="section-subtitle fade-in">Çalıştığım diller ve teknolojiler</p>
+        
+        <div class="skills-grid">
+            <div class="skill-card fade-in">
+                <div class="skill-icon">📱</div>
+                <div class="skill-name">Android Development</div>
+                <div class="skill-description">Kotlin, Java, MVVM, Clean Architecture</div>
             </div>
             
+            <div class="skill-card fade-in">
+                <div class="skill-icon">🔥</div>
+                <div class="skill-name">Firebase</div>
+                <div class="skill-description">Authentication, Firestore, Storage, Cloud Functions</div>
+            </div>
+            
+            <div class="skill-card fade-in">
+                <div class="skill-icon">💾</div>
+                <div class="skill-name">Database</div>
+                <div class="skill-description">Room DB, SQL Server, MySQL</div>
+            </div>
+            
+            
+            <div class="skill-card fade-in">
+                <div class="skill-icon">🔧</div>
+                <div class="skill-name">Tools & Others</div>
+                <div class="skill-description">Git, Retrofit, RxJava, REST API</div>
+            </div>
         </div>
-    </div>
-</div>
-<!-- Qualification End -->
+    </section>
 
-    <!-- Portfolio Start -->
-    <div class="container-fluid pt-5 pb-3" id="portfolio">
-        <div class="container">
-            <div class="position-relative d-flex align-items-center justify-content-center">
-                <h1 class="display-1 text-uppercase text-white" style="-webkit-text-stroke: 1px #dee2e6;">Galeri</h1>
-                <h1 class="position-absolute text-uppercase text-primary">Galerim</h1>
+    <!-- Experience Section -->
+    <section id="experience">
+        <h2 class="section-title fade-in">Deneyim</h2>
+        <p class="section-subtitle fade-in">Eğitim ve profesyonel yolculuğum</p>
+        
+        <div class="experience-grid">
+            <div class="experience-card fade-in">
+                <div class="experience-icon">💼</div>
+                <div class="experience-header">
+                    <span class="experience-type">STAJ</span>
+                    <h3 class="experience-title">Mobile Game Developer</h3>
+                    <div class="experience-company">Valentura Teknoloji ve Yatırım A.Ş.</div>
+                    <div class="experience-date">Temmuz 2024 - Eylül 2024</div>
+                </div>
+                <div class="experience-body">
+                    <p class="experience-description">
+                        Mobile Game Developer olarak bir 2D oyun projesinin backend ve veritabanı altyapısının 
+                        geliştirilmesinde görev aldım. Oyun içi veri yönetimi, API entegrasyonları ve temel 
+                        sunucu tarafı işlemlerinde aktif rol üstlendim.
+                    </p>
+                    <div class="experience-tags">
+                        <span class="experience-tag">Game Development</span>
+                        <span class="experience-tag">Backend</span>
+                        <span class="experience-tag">API</span>
+                        <span class="experience-tag">Database</span>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <div class="col-12 text-center mb-2">
-                    <ul class="list-inline mb-4" id="portfolio-flters">
-                        <li class="btn btn-sm btn-outline-primary m-1 active" data-filter=".first">Kişisel</li>
-                        <li class="btn btn-sm btn-outline-primary m-1" data-filter=".second">Sertifikalarım</li>
-                    </ul>
+            
+            <div class="experience-card fade-in">
+                <div class="experience-icon">🖥️</div>
+                <div class="experience-header">
+                    <span class="experience-type">PART-TIME</span>
+                    <h3 class="experience-title">Sistem Yöneticisi</h3>
+                    <div class="experience-company">Atatürk Üniversitesi - Yönetim Ofisi</div>
+                    <div class="experience-date">2022 - 2024</div>
+                </div>
+                <div class="experience-body">
+                    <p class="experience-description">
+                        Fakültemizde kullanılmakta olan sunucu ve ağ altyapısının yönetimi ve bakımında görev aldım. 
+                        Fakülte genelinde kullanılan cihazların bu altyapı ile entegrasyonu, optimizasyonu ve olası 
+                        sorunların çözümü konusunda teknik destek sağladım.
+                    </p>
+                    <div class="experience-tags">
+                        <span class="experience-tag">Network</span>
+                        <span class="experience-tag">Server Management</span>
+                        <span class="experience-tag">IT Support</span>
+                    </div>
                 </div>
             </div>
-            <div class="row portfolio-container">
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item first">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/Kisisel3.jpg" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/Kisisel3.jpg" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
+            
+            <div class="experience-card fade-in">
+                <div class="experience-icon">🎓</div>
+                <div class="experience-header">
+                    <span class="experience-type">EĞİTİM</span>
+                    <h3 class="experience-title">Bilgisayar Mühendisliği</h3>
+                    <div class="experience-company">Atatürk Üniversitesi</div>
+                    <div class="experience-date">2020 - 2024</div>
+                </div>
+                <div class="experience-body">
+                    <p class="experience-description">
+                        Bilgisayar Mühendisliği Bölümünü başarılı bir şekilde tamamladım. Eğitim sürecinde 
+                        yazılım geliştirme, veri yapıları, algoritmalar ve modern yazılım mimarisi konularında 
+                        kapsamlı bilgi edindim. Mobil programlama ve oyun geliştirme üzerine odaklandım.
+                    </p>
+                    <div class="experience-tags">
+                        <span class="experience-tag">Software Engineering</span>
+                        <span class="experience-tag">Mobile Development</span>
+                        <span class="experience-tag">Algorithms</span>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item first">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/Kisisel1.jpg" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/Kisisel1.jpg" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item first">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/kisisel4.jpg" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/kisisel4.jpg" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item second">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/KotlinprogramlamaDiliBTK.PNG" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/KotlinprogramlamaDiliBTK.PNG" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item second">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/KotlinTemelleriBtk.PNG" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/KotlinTemelleriBtk.PNG" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item second">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/KotlinİleriSeviyeBTK.PNG" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/KotlinİleriSeviyeBTK.PNG" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item second">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/Sql_1.PNG" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/Sql_1.png" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item second">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/GitEğtimiBtk.PNG" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/GitEğtimiBtk.PNG" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item second">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/Python_Yüzyüze_Sertifika.PNG" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/Python_Yüzyüze_Sertifika.PNG" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item second">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/Unity-1.PNG" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/Unity-1.PNG" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mb-4 portfolio-item second">
-                    <div class="position-relative overflow-hidden mb-2">
-                        <img class="img-fluid rounded w-100" src="img/Unity-2.PNG" alt="">
-                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
-                            <a href="img/Unity-2.PNG" data-lightbox="portfolio">
-                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
             </div>
         </div>
-    </div>
-    <!-- Portfolio End -->
-    <!-- Footer Start -->
-    <div class="container-fluid bg-primary text-white mt-5 py-5 px-sm-3 px-md-5">
-        <div class="container text-center py-5">
-            <div class="d-flex justify-content-center mb-4">
-                <a class="btn btn-light btn-social mr-2" href="https://twitter.com/BalkayaBugra"><i class="fab fa-twitter"></i></a>
-                <a class="btn btn-light btn-social mr-2" href="https://www.linkedin.com/in/ahmet-bugra-balkaya-433453244/"><i class="fab fa-linkedin-in"></i></a>
-                <a class="btn btn-light btn-social mr-2" href="https://www.instagram.com/accounts/login/?next=/ahmetbugrabalkaya/"><i class="fab fa-instagram"></i></a>
-                <a class="btn btn-light btn-social mr-2" href="https://github.com/ahmetBugra25"><i class="fab fa-github"></i></a>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="section-title fade-in">Projeler</h2>
+        <p class="section-subtitle fade-in">Geliştirdiğim bazı önemli projeler</p>
+        
+        <div class="projects-grid">
+            <div class="project-card fade-in">
+                <div class="project-header">
+                    <h3 class="project-title">ActivityPool</h3>
+                    <p class="project-tech">Kotlin • Firebase • TicketMaster API • Google Maps</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">
+                        Kullanıcıların konuma göre etkinlikleri görüntüleyebildiği, favorilere eklediği ve 
+                        yol tarifi alabileceği kapsamlı bir etkinlik uygulaması.
+                    </p>
+                </div>
             </div>
-            <div class="d-flex justify-content-center mb-3">
-                <a class="text-white" href="#">Gizlilik</a>
-                <span class="px-3">|</span>
-                <a class="text-white" href="#">Şartlar</a>
-                <span class="px-3">|</span>
-                <a class="text-white" href="#">SSS</a>
-                <span class="px-3">|</span>
-                <a class="text-white" href="#">Yardım</a>
+            
+            <div class="project-card fade-in">
+                <div class="project-header">
+                    <h3 class="project-title">ErzTask</h3>
+                    <p class="project-tech">Kotlin • Firebase</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">
+                        Yazılım şirketleri için tasarlanan, çalışanlar arası iletişimi kolaylaştıran ve 
+                        proje yönetimini destekleyen mobil uygulama.
+                    </p>
+                </div>
             </div>
-            <p class="m-0">&copy; <a class="text-white font-weight-bold" href="#">BALKAYA</a> Hakları Gizlidir. </a>
+            
+            <div class="project-card fade-in">
+                <div class="project-header">
+                    <h3 class="project-title">Sahibinden Clone</h3>
+                    <p class="project-tech">Kotlin • Firebase • Storage</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">
+                        2. el alışveriş platformu benzeri, ilan oluşturma ve görüntüleme özelliklerine 
+                        sahip mobil uygulama.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="project-card fade-in">
+                <div class="project-header">
+                    <h3 class="project-title">Social Media App</h3>
+                    <p class="project-tech">Kotlin • Firebase • Firestore</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">
+                        Kullanıcıların kayıt olabildiği, gönderi paylaşabildiği ve etkileşime geçebildiği 
+                        sosyal medya uygulaması.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="project-card fade-in">
+                <div class="project-header">
+                    <h3 class="project-title">Weather App</h3>
+                    <p class="project-tech">Kotlin • Retrofit • RxJava • WeatherStack API</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">
+                        Seçilen şehirlerin anlık hava durumu bilgilerini gösteren, modern API entegrasyonlu uygulama.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="project-card fade-in">
+                <div class="project-header">
+                    <h3 class="project-title">Bitirme Projesi</h3>
+                    <p class="project-tech">Unity • C# • Firebase • ChatGPT API</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">
+                        Çocukların bilinçli telefon kullanımını destekleyen, yapay zeka gözetimli eğitici 
+                        oyunlar içeren kapsamlı mobil platform.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="project-card fade-in">
+                <div class="project-header">
+                    <h3 class="project-title">Gebze İş Güvenliği</h3>
+                    <p class="project-tech">WordPress • PHP • MySQL</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">
+                        İş güvenliği firması için tasarlanan, ürün satışı ve hizmet tanıtımı için 
+                        e-ticaret web sitesi.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="project-card fade-in">
+                <div class="project-header">
+                    <h3 class="project-title">Crypto Tracker</h3>
+                    <p class="project-tech">Kotlin • Retrofit • RxJava • Nomics API</p>
+                </div>
+                <div class="project-body">
+                    <p class="project-description">
+                        Güncel kripto para değerlerini izleyen, modern mimari prensipleriyle geliştirilmiş 
+                        mobil uygulama.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title fade-in">İletişim</h2>
+        <p class="section-subtitle fade-in">Benimle iletişime geçin</p>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value">
+                        <a href="mailto:ahmetbugrabalkaya@gmail.com">ahmetbugrabalkaya@gmail.com</a>
+                    </div>
+                </div>
+                
+                
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">💼</div>
+                    <div class="contact-label">GitHub</div>
+                    <div class="contact-value">
+                        <a href="https://github.com/ahmetbugra25" target="_blank">@ahmetbugra25</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">
+                © 2024 Ahmet Buğra Balkaya. Tüm hakları saklıdır.
+            </p>
+            <p class="footer-text">
+                Kotlin ve modern teknolojilerle Android uygulamaları geliştiriyorum
             </p>
         </div>
-    </div>
-    <!-- Footer End -->
+    </footer>
 
-    <!-- Scroll to Bottom -->
-    <i class="fa fa-2x fa-angle-down text-white scroll-to-bottom"></i>
+    <script>
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-outline-dark px-0 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
 
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/typed/typed.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
 
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
+        // Active Nav Link
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
-
 </html>
