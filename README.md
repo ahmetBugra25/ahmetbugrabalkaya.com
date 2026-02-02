@@ -1,3 +1,2 @@
 # ahmetbugrabalkaya.com
-ahmetbugrabalkaya.com
-https://ahmetbugra25.github.io/ahmetbugrabalkaya.com/
+[ahmetbugrabalkaya.com](http://ahmetbugrabalkaya.com/)
